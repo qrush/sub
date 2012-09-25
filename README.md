@@ -68,10 +68,10 @@ echo $_RUSH_ROOT
 
 Your sub loves autocompletion. It's the mustard, mayo, or whatever topping you'd like that day for your commands. Just like real toppings, you have to opt into them! Sub provides two kinds of autocompletion:
 
-1. Autocompletion to find subcommands (What can this sub do?)
-2. Autocompletion of potential arguments for your subcommands (What can this subcommand do?)
+1. Automatic autocompletion to find subcommands (What can this sub do?)
+2. Opt-in autocompletion of potential arguments for your subcommands (What can this subcommand do?)
 
-Opting into autocompletion requires that you add a magic comment, and then support parsing of a flag: `--complete`. Here's an example from rbenv:
+Opting into autocompletion of subcommands requires that you add a magic comment, and then support parsing of a flag: `--complete`. Here's an example from rbenv, namely `rbenv whence`:
 
 ``` bash
 #!/usr/bin/env bash
@@ -83,6 +83,8 @@ if [ "$1" = "--complete" ]; then
   echo --path
   exec rbenv shims --short
 fi
+
+# lots more bash...
 ```
 
 Passing the `--complete` flag to this subcommand short circuits the real command, and then runs another subcommand instead. The output from your subcommand's `--complete` run is sent to your shell's autocompletion handler for you, and you don't ever have to once worry about how any of that works!
