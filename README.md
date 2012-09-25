@@ -89,7 +89,7 @@ fi
 
 Passing the `--complete` flag to this subcommand short circuits the real command, and then runs another subcommand instead. The output from your subcommand's `--complete` run is sent to your shell's autocompletion handler for you, and you don't ever have to once worry about how any of that works!
 
-## Aliases
+## Shortcuts
 
 Creating shortcuts for commands is easy, just symlink the shorter version you'd like to run inside of your `libexec` directory.
 
@@ -104,7 +104,9 @@ Now, `rush w` should run `libexec/rush-who`, and save you mere milliseconds of t
 
 Clone this repo, and run:
 
-`./rename.sh [name of your executable]`
+    ./rename.sh [name of your executable]
+
+If you made a mistake with the name, just `git checkout -f` and run the rename command again.
 
 From there you may want to wipe the git history clean and start anew: `rm -rf .git`.
 
