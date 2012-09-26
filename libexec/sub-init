@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -e
+
+print=""
+if [ "$1" = "-" ]; then
+  print=1
+  shift
+fi
+
+shell="$1"
+if [ -z "$shell" ]; then
+  shell="$(basename "$SHELL")"
+fi
+
+if [ -z "$print" ]; then
+  case "$shell" in
+  bash )
+    profile='~/.bash_profile'
+    ;;
+  zsh )
+    profile='~/.zshenv'
+    ;;
+  * )
+    profile='your profile'
+    ;;
+  esac
+
+  { echo "# Load sub automatically by adding"
+    echo "# the following to ${profile}:"
+    echo
+    echo "eval \"\$(${_SUB_ROOT}/bin/sub init -)\""
+    echo
+  } >&2
+
+  exit 1
+fi
+
+echo "export PATH=\"\${PATH}:${_SUB_ROOT}/bin\""

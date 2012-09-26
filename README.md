@@ -8,7 +8,7 @@ A sub program is run at the command line using this style:
 
 Here's some quick examples:
 
-    $ rbenv                    # prints out version number, usage, and subcommands
+    $ rbenv                    # prints out usage and subcommands
     $ rbenv versions           # runs the "versions" subcommand
     $ rbenv shell 1.9.3-p194   # runs the "shell" subcommand, passing "1.9.3-p194" as an argument
 
@@ -49,9 +49,10 @@ You can run *any* executable in the `libexec` directly, as long as it follows th
 
 You get a few commands that come with your sub:
 
-* `init`: Loads your sub
-* `version`: Shows your sub's version
+* `commands`: Prints out every subcommand available
 * `completions`: Used for shell autocompletion. See the next section!
+* `help`: Document how to use each subcommand
+* `init`: Shows how to load your sub with autocompletions, based on your shell.
 
 If you ever need to reference files inside of your sub's installation, say to access a file in the `share` directory, your sub exposes the directory path in the environment, based on your sub name. For a sub named `rush`, the variable name will be `_SUB_ROOT`.
 
