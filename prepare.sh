@@ -27,5 +27,20 @@ done
 
 ln -s ../libexec/$SUBNAME bin/$SUBNAME
 
-echo "Done! Enjoy your new sub!"
-echo "Want to make a different sub? Run 'git add .; git checkout -f' and prepare again."
+rm LICENSE
+rm README.md
+rm prepare.sh
+
+echo "Done! Enjoy your new sub! If you're happy with your sub, run:"
+echo
+echo "    rm -rf .git"
+echo "    git init"
+echo "    git add ."
+echo "    git commit -m 'Starting off $SUBNAME'"
+echo
+echo "Want to make a different sub? Run:"
+echo
+echo "    git add ."
+echo "    git checkout -f"
+echo
+echo "Thanks for making a sub!"
