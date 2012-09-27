@@ -16,8 +16,7 @@ rm bin/sub
 mv share/sub share/$SUBNAME
 
 for file in **/sub*; do
-  SUBFILE=$(echo $file | sed "s/sub/$SUBNAME/")
-  sed "s/sub/$SUBNAME/g" $file | sed "s/SUB_ROOT/$ENVNAME/g" > $SUBFILE
+  sed "s/sub/$SUBNAME/g" $file | sed "s/SUB_ROOT/$ENVNAME/g" > $(echo $file | sed "s/sub/$SUBNAME/")
   rm $file
 done
 
