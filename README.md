@@ -65,6 +65,27 @@ set -e
 echo $_RUSH_ROOT
 ```
 
+## Self-documenting
+
+Each subcommand can opt into self-documentation, which allows the subcommand to provide information when `sub` and `sub help [SUBCOMMAND]` is run.
+
+This is all done by adding a few magic comments. Here's an example from `rush who` (also see `sub commands` for another example):
+
+``` bash
+#!/usr/bin/env bash
+# Usage: Usage: `sub who`
+# Summary: Check who's logged in
+# Help: This will print out when you run `sub help who`.
+# You can have multiple lines even!
+
+set -e
+
+who
+```
+
+Now, when you run `sub`, it should show now show up:
+
+
 ## Autocompletion
 
 Your sub loves autocompletion. It's the mustard, mayo, or whatever topping you'd like that day for your commands. Just like real toppings, you have to opt into them! Sub provides two kinds of autocompletion:

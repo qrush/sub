@@ -1,31 +1,42 @@
 #!/usr/bin/env bash
 set -e
 
+print_summaries() {
+  for file in libexec/sub-*; do
+    local summary=$(grep "^# Summary:" $file | cut -d ' ' -f3-)
+    if [ -n "$summary" ]; then
+      local name=$(basename $file | sed 's/sub-//')
+      echo "$name" | awk '{ printf "   %-20s   ", $1}'
+      echo -n $summary
+      echo
+    fi
+  done
+}
+
+print_help() {
+  local usage=$(grep "^# Usage:" $1 | cut -d ' ' -f2-)
+  local halp="$(awk '/^# Help:/,/^[^#]/' libexec/sub-commands | grep "^#" | sed "s/^# Help: //" | sed "s/# //")"
+
+  if [ -n "$usage" ]; then
+    echo $usage
+    [ -n "$halp" ] && echo && echo "$halp"
+  else
+    echo "Sorry, this command isn't documented yet."
+  fi
+}
+
 case "$1" in
 "") echo "usage: sub <command> [<args>]
 
 Some useful sub commands are:
-   commands      List all sub commands
+$(print_summaries)
 
 See 'sub help <command>' for information on a specific command."
 ;;
-# >>>>> copy from this block to add more help blocks!
-# See https://github.com/sstephenson/rbenv/blob/master/libexec/rbenv-help for more examples.
-commands) echo "usage: sub commands
-       sub commands --sh
-       sub commands --no-sh
-
-List all sub commands."
-;;
-# >>>>>
 *)
   command_path="$(command -v "sub-$1" || true)"
   if [ -n "$command_path" ]; then
-    echo "Sorry, the \`$1' command isn't documented yet."
-    echo
-    echo "You can view the command's source here:"
-    echo "$command_path"
-    echo
+    print_help "libexec/sub-$1"
   else
     echo "sub: no such command \`$1'"
   fi
