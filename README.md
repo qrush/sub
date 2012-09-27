@@ -22,7 +22,7 @@ Each subcommand maps to a separate, standalone executable program. Sub programs 
 
 ## Subcommands
 
-Each subcommand executable does not necessary need to be in bash. It can be any program, shell script, or even a symlink. It just needs to run.
+Each subcommand executable does not necessarily need to be in bash. It can be any program, shell script, or even a symlink. It just needs to run.
 
 Here's an example of adding a new subcommand. Let's say your sub is named `rush`. Run:
 
