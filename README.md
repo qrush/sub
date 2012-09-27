@@ -54,7 +54,7 @@ You get a few commands that come with your sub:
 * `help`: Document how to use each subcommand
 * `init`: Shows how to load your sub with autocompletions, based on your shell.
 
-If you ever need to reference files inside of your sub's installation, say to access a file in the `share` directory, your sub exposes the directory path in the environment, based on your sub name. For a sub named `rush`, the variable name will be `_SUB_ROOT`.
+If you ever need to reference files inside of your sub's installation, say to access a file in the `share` directory, your sub exposes the directory path in the environment, based on your sub name. For a sub named `rush`, the variable name will be `_RUSH_ROOT`.
 
 Here's an example subcommand you could drop into your `libexec` directory to show this in action: (make sure to correct the name!)
 
