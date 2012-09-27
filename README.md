@@ -45,14 +45,15 @@ Of course, this is a simple example...but now `rush who` should work!
 
 You can run *any* executable in the `libexec` directly, as long as it follows the `NAME-SUBCOMMAND` convention. Try out a Ruby script or your favorite language!
 
-## Built-ins
+## What's on your sub
 
 You get a few commands that come with your sub:
 
 * `commands`: Prints out every subcommand available
-* `completions`: Used for shell autocompletion. See the next section!
+* `completions`: Helps kick off subcommand autocompletion.
 * `help`: Document how to use each subcommand
 * `init`: Shows how to load your sub with autocompletions, based on your shell.
+* `shell`: Helps with calling subcommands that might be named the same as builtin/executables.
 
 If you ever need to reference files inside of your sub's installation, say to access a file in the `share` directory, your sub exposes the directory path in the environment, based on your sub name. For a sub named `rush`, the variable name will be `_RUSH_ROOT`.
 
@@ -65,7 +66,7 @@ set -e
 echo $_RUSH_ROOT
 ```
 
-## Self-documenting
+## Self-documenting subcommands
 
 Each subcommand can opt into self-documentation, which allows the subcommand to provide information when `sub` and `sub help [SUBCOMMAND]` is run.
 
