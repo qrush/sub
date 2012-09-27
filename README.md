@@ -103,7 +103,7 @@ Let's say we want to shorten up our `rush who` to `rush w`. Just make a symlink!
 
 Now, `rush w` should run `libexec/rush-who`, and save you mere milliseconds of typing every day!
 
-## Make your sub
+## Prepare your sub
 
 Clone this repo:
 
