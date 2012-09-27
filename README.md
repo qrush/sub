@@ -107,7 +107,7 @@ Clone this repo, and run:
 
     ./prepare.sh [name of your executable]
 
-If you made a mistake with the name, just `git checkout -f` and run the prepare command again.
+If you made a mistake with the name, just `git add .; git checkout -f` and run the prepare command again.
 
 From there you may want to wipe the git history clean and start anew: `rm -rf .git`.
 
