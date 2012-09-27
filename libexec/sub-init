@@ -36,3 +36,9 @@ if [ -z "$print" ]; then
 fi
 
 echo "export PATH=\"\${PATH}:${_SUB_ROOT}/bin\""
+
+case "$shell" in
+bash | zsh )
+  echo "source \"$root/completions/sub.${shell}\""
+  ;;
+esac
