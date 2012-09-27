@@ -1,6 +1,6 @@
 # sub: a delicious way to organize programs
 
-Sub is a model for setting up shell programs that use subcommands, like `git` or `rbenv` using bash. However, it does not require you to write shell scripts in bash, just the skeleton around sub is bash. This repo is an example of how you can create your own sub-style programs.
+Sub is a model for setting up shell programs that use subcommands, like `git` or `rbenv` using bash. Making a sub does not require you to write shell scripts in bash, you can write subcommands in any scripting language you prefer.
 
 A sub program is run at the command line using this style:
 
