@@ -90,6 +90,8 @@ fi
 
 Passing the `--complete` flag to this subcommand short circuits the real command, and then runs another subcommand instead. The output from your subcommand's `--complete` run is sent to your shell's autocompletion handler for you, and you don't ever have to once worry about how any of that works!
 
+Run the `init` subcommand after you've prepared your sub to get your sub loading automatically in your shell.
+
 ## Shortcuts
 
 Creating shortcuts for commands is easy, just symlink the shorter version you'd like to run inside of your `libexec` directory.
