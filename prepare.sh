@@ -38,7 +38,6 @@ echo "    git init"
 echo "    git add ."
 echo "    git commit -m 'Starting off $SUBNAME'"
 echo
-echo "You might want to rename this directory too after that."
 echo "Made a mistake? Want to make a different sub? Run:"
 echo
 echo "    git add ."
