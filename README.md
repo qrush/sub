@@ -101,13 +101,13 @@ Let's say we want to shorten up our `rush who` to `rush w`. Just make a symlink!
 
 Now, `rush w` should run `libexec/rush-who`, and save you mere milliseconds of typing every day!
 
-## Installing
+## Make your sub
 
 Clone this repo, and run:
 
-    ./rename.sh [name of your executable]
+    ./prepare.sh [name of your executable]
 
-If you made a mistake with the name, just `git checkout -f` and run the rename command again.
+If you made a mistake with the name, just `git checkout -f` and run the prepare command again.
 
 From there you may want to wipe the git history clean and start anew: `rm -rf .git`.
 
