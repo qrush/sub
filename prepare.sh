@@ -37,7 +37,7 @@ echo "    rm -rf .git"
 echo "    git init"
 echo "    git add ."
 echo "    git commit -m 'Starting off $SUBNAME'"
-echo "    bin/$SUBNAME init"
+echo "    ./bin/$SUBNAME init"
 echo
 echo "Made a mistake? Want to make a different sub? Run:"
 echo
