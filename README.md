@@ -66,7 +66,7 @@ set -e
 echo $_RUSH_ROOT
 ```
 
-You can also use this environment variable to call other commands inside of your `libexec` directly. Composition of this type is very much encourages reuse of small scripts, and keeps scripts doing *one* thing simply.
+You can also use this environment variable to call other commands inside of your `libexec` directly. Composition of this type very much encourages reuse of small scripts, and keeps scripts doing *one* thing simply.
 
 ## Self-documenting subcommands
 
