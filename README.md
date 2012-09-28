@@ -76,10 +76,14 @@ This is all done by adding a few magic comments. Here's an example from `rush wh
 
 ``` bash
 #!/usr/bin/env bash
-# Usage: `sub who`
+# Usage: sub who
 # Summary: Check who's logged in
 # Help: This will print out when you run `sub help who`.
 # You can have multiple lines even!
+#
+#    Show off an example indented
+#
+# And maybe start off another one?
 
 set -e
 
@@ -96,10 +100,14 @@ Now, when you run `sub`, the "Summary" magic comment will now show up:
 
 And running `sub help who` will show the "Usage" magic comment, and then the "Help" comment block:
 
-    Usage: `sub who`
+    Usage: sub who
 
-    This command is mostly used for autocompletion in various shells, and for `sub help`.
-    Also, this command helps find commands that are named the same as potentially builtin shell commands (which, cd, etc)
+    This will print out when you run `sub help who`.
+    You can have multiple lines even!
+
+       Show off an example indented
+
+    And maybe start off another one?
 
 That's not all you get by convention with sub...
 
