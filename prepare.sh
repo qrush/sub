@@ -10,21 +10,23 @@ fi
 SUBNAME=$(echo $NAME | tr '[A-Z]' '[a-z]')
 ENVNAME="$(echo $NAME | tr '[a-z]' '[A-Z]')_ROOT"
 
-echo "Preparing your $SUBNAME sub!"
+echo "Preparing your '$SUBNAME' sub!"
 
-rm bin/sub
-mv share/sub share/$SUBNAME
+if [ "$NAME" != "sub" ]; then
+  rm bin/sub
+  mv share/sub share/$SUBNAME
 
-for file in **/sub*; do
-  sed "s/sub/$SUBNAME/g" $file | sed "s/SUB_ROOT/$ENVNAME/g" > $(echo $file | sed "s/sub/$SUBNAME/")
-  rm $file
-done
+  for file in **/sub*; do
+    sed "s/sub/$SUBNAME/g" $file | sed "s/SUB_ROOT/$ENVNAME/g" > $(echo $file | sed "s/sub/$SUBNAME/")
+    rm $file
+  done
 
-for file in libexec/*; do
-  chmod a+x $file
-done
+  for file in libexec/*; do
+    chmod a+x $file
+  done
 
-ln -s ../libexec/$SUBNAME bin/$SUBNAME
+  ln -s ../libexec/$SUBNAME bin/$SUBNAME
+fi
 
 rm LICENSE
 rm README.md
