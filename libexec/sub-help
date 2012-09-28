@@ -17,7 +17,7 @@ print_summaries() {
 
 print_help() {
   local usage=$(grep "^# Usage:" $1 | cut -d ' ' -f2-)
-  local halp="$(awk '/^# Help:/,/^[^#]/' libexec/sub-commands | grep "^#" | sed "s/^# Help: //" | sed "s/# //")"
+  local halp="$(awk '/^# Help:/,/^[^#]/' $1 | grep "^#" | sed "s/^# Help: //" | sed "s/#//")"
 
   if [ -n "$usage" ]; then
     echo $usage
