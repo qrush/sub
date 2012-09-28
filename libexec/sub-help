@@ -2,7 +2,7 @@
 set -e
 
 print_summaries() {
-  for file in libexec/sub-*; do
+  for file in $_SUB_ROOT/libexec/sub-*; do
     if [ ! -h $file ]; then
       local summary=$(grep "^# Summary:" $file | cut -d ' ' -f3-)
       if [ -n "$summary" ]; then
@@ -17,7 +17,7 @@ print_summaries() {
 
 print_help() {
   local usage=$(grep "^# Usage:" $1 | cut -d ' ' -f2-)
-  local halp="$(awk '/^# Help:/,/^[^#]/' $1 | grep "^#" | sed "s/^# Help: //" | sed "s/#//")"
+  local halp="$(awk '/^# Help:/,/^[^#]/' $1 | grep "^#" | sed "s/^# Help: //" | sed "s/^# //" | sed "s/^#//")"
 
   if [ -n "$usage" ]; then
     echo $usage
@@ -36,9 +36,9 @@ $(print_summaries)
 See 'sub help <command>' for information on a specific command."
 ;;
 *)
-  command_path="$(command -v "sub-$1" || true)"
+  command_path="$(command -v "$_SUB_ROOT/libexec/sub-$1" || true)"
   if [ -n "$command_path" ]; then
-    print_help "libexec/sub-$1"
+    print_help "$_SUB_ROOT/libexec/sub-$1"
   else
     echo "sub: no such command \`$1'"
   fi
