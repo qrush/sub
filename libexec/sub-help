@@ -3,12 +3,14 @@ set -e
 
 print_summaries() {
   for file in libexec/sub-*; do
-    local summary=$(grep "^# Summary:" $file | cut -d ' ' -f3-)
-    if [ -n "$summary" ]; then
-      local name=$(basename $file | sed 's/sub-//')
-      echo "$name" | awk '{ printf "   %-20s   ", $1}'
-      echo -n $summary
-      echo
+    if [ ! -h $file ]; then
+      local summary=$(grep "^# Summary:" $file | cut -d ' ' -f3-)
+      if [ -n "$summary" ]; then
+        local name=$(basename $file | sed 's/sub-//')
+        echo "$name" | awk '{ printf "   %-20s   ", $1}'
+        echo -n $summary
+        echo
+      fi
     fi
   done
 }
