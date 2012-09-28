@@ -28,7 +28,6 @@ if [ "$NAME" != "sub" ]; then
   ln -s ../libexec/$SUBNAME bin/$SUBNAME
 fi
 
-rm LICENSE
 rm README.md
 rm prepare.sh
 
