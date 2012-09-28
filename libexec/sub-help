@@ -27,6 +27,12 @@ print_help() {
   fi
 }
 
+# Provide sub completions
+if [ "$1" = "--complete" ]; then
+  exec "sub-commands"
+  exit
+fi
+
 case "$1" in
 "") echo "Usage: sub <command> [<args>]
 
