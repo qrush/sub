@@ -118,7 +118,11 @@ Your sub loves autocompletion. It's the mustard, mayo, or whatever topping you'd
 1. Automatic autocompletion to find subcommands (What can this sub do?)
 2. Opt-in autocompletion of potential arguments for your subcommands (What can this subcommand do?)
 
-Opting into autocompletion of subcommands requires that you add a magic comment, and then support parsing of a flag: `--complete`. Here's an example from rbenv, namely `rbenv whence`:
+Opting into autocompletion of subcommands requires that you add a magic comment of (make sure to replace with your sub's name!):
+
+    # Provide YOUR_SUB_NAME completions
+
+and then your script must support parsing of a flag: `--complete`. Here's an example from rbenv, namely `rbenv whence`:
 
 ``` bash
 #!/usr/bin/env bash
@@ -133,8 +137,6 @@ fi
 
 # lots more bash...
 ```
-
-The magic comment looks like `# Provide your_sub_name completions`
 
 Passing the `--complete` flag to this subcommand short circuits the real command, and then runs another subcommand instead. The output from your subcommand's `--complete` run is sent to your shell's autocompletion handler for you, and you don't ever have to once worry about how any of that works!
 
