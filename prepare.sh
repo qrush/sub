@@ -8,7 +8,7 @@ if [ -z "$NAME" ]; then
 fi
 
 SUBNAME=$(echo $NAME | tr '[A-Z]' '[a-z]')
-ENVNAME="$(echo $NAME | tr '[a-z]' '[A-Z]')_ROOT"
+ENVNAME="$(echo $NAME | tr '[a-z]' '[A-Z]' | tr '-' '_')_ROOT"
 
 echo "Preparing your '$SUBNAME' sub!"
 
