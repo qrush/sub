@@ -17,7 +17,7 @@ if [ "$NAME" != "sub" ]; then
   mv share/sub share/$SUBNAME
 
   for file in **/sub*; do
-    sed "s/sub/$SUBNAME/g" $file | sed "s/SUB_ROOT/$ENVNAME/g" > $(echo $file | sed "s/sub/$SUBNAME/")
+    sed "s/sub/$SUBNAME/g;s/SUB_ROOT/$ENVNAME/g" "$file" > $(echo $file | sed "s/sub/$SUBNAME/")
     rm $file
   done
 
