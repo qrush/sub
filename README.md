@@ -161,7 +161,26 @@ Clone this repo:
     cd [name of your sub]
     ./prepare.sh [name of your sub]
 
-The prepare script will run you through the steps for making your own sub.
+The prepare script will run you through the steps for making your own sub. Also, don't call it `sub`, by the way! Give it a better name.
+
+## Install your sub
+
+So you've prepared your own sub, now how do you use it? Here's one way you could install your sub in your `$HOME` directory:
+
+    cd
+    git clone [YOUR GIT HOST URL]/sub.git .sub
+
+For bash users:
+
+    echo 'eval "$($HOME/.sub/bin/sub init -)"' >> ~/.bash_profile
+    exec bash
+
+For zsh users:
+
+    echo 'eval "$($HOME/.sub/bin/sub init -)"' >> ~/.zshenv
+    source ~/.zshenv
+
+You could also install your sub in a different directory, say `/usr/local`. This is just one way you could provide a way to install your sub.
 
 ## License
 
