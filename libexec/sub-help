@@ -2,28 +2,75 @@
 set -e
 
 print_summaries() {
-  for file in $_SUB_ROOT/libexec/sub-*; do
-    if [ ! -h $file ]; then
-      local summary=$(sed -n "s/^# Summary: \(.*\)/\1/p" "$file")
+  local commands=()
+  local summaries=()
+  local longest_command=0
+  local command
+
+  for command in $(sub-commands); do
+    local file="$(command_path "$command")"
+    if [ ! -h "$file" ]; then
+      local summary="$(summary "$file")"
       if [ -n "$summary" ]; then
-        local name=$(basename $file | sed 's/sub-//')
-        awk -v name="$name" 'BEGIN {printf "   %-20s   ", name}'
-        echo -en $summary
-        echo
+        commands["${#commands[@]}"]="$command"
+        summaries["${#summaries[@]}"]="$summary"
+
+        if [ "${#command}" -gt "$longest_command" ]; then
+          longest_command="${#command}"
+        fi
       fi
     fi
+  done
+
+  local index
+  local columns="$(tput cols)"
+  local summary_length=$(( $columns - $longest_command - 5 ))
+
+  for (( index=0; index < ${#commands[@]}; index++ )); do
+    printf "   %-${longest_command}s  %s\n" "${commands[$index]}" \
+      "$(truncate "$summary_length" "${summaries[$index]}")"
   done
 }
 
 print_help() {
-  local usage=$(sed -n "s/^# \(Usage: .*\)/\1/p" "$1")
-  local halp=$(awk '/^[^#]/{p=0} /^# Help:/{p=1} p' "$1" | sed "s/^# Help: //;s/^# //;s/^#//")
+  local file="$1"
+  local usage="$(usage "$file")"
 
   if [ -n "$usage" ]; then
-    echo $usage
-    [ -n "$halp" ] && echo && echo "$halp"
+    echo "$usage"
+
+    local help="$(help "$file")"
+    [ -n "$help" ] && echo && echo "$help"
   else
     echo "Sorry, this command isn't documented yet."
+  fi
+}
+
+command_path() {
+  command -v "sub-$command" || command -v "sub-sh-$command" || true
+}
+
+summary() {
+  sed -n "s/^# Summary: \(.*\)/\1/p" "$1"
+}
+
+usage() {
+  sed -n "s/^# \(Usage: .*\)/\1/p" "$1"
+}
+
+help() {
+  awk '/^[^#]/{p=0} /^# Help:/{p=1} p' "$1" | sed "s/^# Help: //;s/^# //;s/^#//"
+}
+
+truncate() {
+  local max_length="$1"
+  local string="$2"
+
+  if [ "${#string}" -gt "$max_length" ]; then
+    local length=$(( $max_length - 3 ))
+    echo "${string:0:$length}..."
+  else
+    echo "$string"
   fi
 }
 
@@ -33,7 +80,8 @@ if [ "$1" = "--complete" ]; then
   exit
 fi
 
-case "$1" in
+command="$1"
+case "$command" in
 "") echo "Usage: sub <command> [<args>]
 
 Some useful sub commands are:
@@ -42,10 +90,12 @@ $(print_summaries)
 See 'sub help <command>' for information on a specific command."
 ;;
 *)
-  command_path="$(command -v "$_SUB_ROOT/libexec/sub-$1" || true)"
-  if [ -n "$command_path" ]; then
-    print_help "$_SUB_ROOT/libexec/sub-$1"
+  file="$(command_path "$command")"
+
+  if [ -n "$file" ]; then
+    print_help "$file"
   else
-    echo "sub: no such command \`$1'"
+    echo "sub: no such command \`$command'" >&2
+    exit 1
   fi
 esac
