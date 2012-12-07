@@ -8,7 +8,7 @@ print_summaries() {
       if [ -n "$summary" ]; then
         local name=$(basename $file | sed 's/sub-//')
         echo "$name" | awk '{ printf "   %-20s   ", $1}'
-        echo -n $summary
+        echo -en $summary
         echo
       fi
     fi
