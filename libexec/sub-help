@@ -4,10 +4,10 @@ set -e
 print_summaries() {
   for file in $_SUB_ROOT/libexec/sub-*; do
     if [ ! -h $file ]; then
-      local summary=$(grep "^# Summary:" $file | cut -d ' ' -f3-)
+      local summary=$(sed -n "s/^# Summary: \(.*\)/\1/p" "$file")
       if [ -n "$summary" ]; then
         local name=$(basename $file | sed 's/sub-//')
-        echo "$name" | awk '{ printf "   %-20s   ", $1}'
+        awk -v name="$name" 'BEGIN {printf "   %-20s   ", name}'
         echo -en $summary
         echo
       fi
@@ -16,8 +16,8 @@ print_summaries() {
 }
 
 print_help() {
-  local usage=$(grep "^# Usage:" $1 | cut -d ' ' -f2-)
-  local halp="$(awk '/^# Help:/,/^[^#]/' $1 | grep "^#" | sed "s/^# Help: //" | sed "s/^# //" | sed "s/^#//")"
+  local usage=$(sed -n "s/^# \(Usage: .*\)/\1/p" "$1")
+  local halp=$(awk '/^[^#]/{p=0} /^# Help:/{p=1} p' "$1" | sed "s/^# Help: //;s/^# //;s/^#//")
 
   if [ -n "$usage" ]; then
     echo $usage
