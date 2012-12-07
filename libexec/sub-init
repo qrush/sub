@@ -66,7 +66,7 @@ esac
 commands=(`sub commands --sh`)
 IFS="|"
 cat <<EOS
-sub() {
+_sub_complete() {
   local command="\$1"
   if [ "\$#" -gt 0 ]; then
     shift
@@ -80,3 +80,15 @@ sub() {
   esac
 }
 EOS
+
+# zsh can't pass argument with aliases, but bash can.
+# zsh can have functions with the name being only numbers, but bash can't.
+# fix both cases here by letting zsh have a function, and bash have its alias.
+case "$shell" in
+bash )
+  echo "alias sub=_sub_complete"
+  ;;
+zsh )
+  echo "sub=_sub_complete"
+  ;;
+esac
