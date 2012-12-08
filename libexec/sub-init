@@ -66,7 +66,7 @@ esac
 commands=(`sub commands --sh`)
 IFS="|"
 cat <<EOS
-_sub_complete() {
+_sub_wrapper() {
   local command="\$1"
   if [ "\$#" -gt 0 ]; then
     shift
@@ -86,9 +86,9 @@ EOS
 # fix both cases here by letting zsh have a function, and bash have its alias.
 case "$shell" in
 bash )
-  echo "alias sub=_sub_complete"
+  echo "alias sub=_sub_wrapper"
   ;;
 zsh )
-  echo "sub=_sub_complete"
+  echo "sub=_sub_wrapper"
   ;;
 esac
