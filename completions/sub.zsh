@@ -1,19 +1,22 @@
-if [[ ! -o interactive ]]; then
-    return
-fi
+#compdef sub
 
-compctl -K _sub sub
+# This completion file should be linked to a directory in ZSH fpath
+# and named `_sub`.
 
-_sub() {
-  local word words completions
-  read -cA words
-  word="${words[2]}"
-
-  if [ "${#words}" -eq 2 ]; then
-    completions="$(sub commands)"
-  else
-    completions="$(sub completions "${word}")"
-  fi
-
-  reply=("${(ps:\n:)completions}")
-}
+case $CURRENT in
+    2)
+        local cmds
+        local -a commands
+        cmds=$(sub commands)
+        commands=(${(ps:\n:)cmds})
+        _wanted command expl "sub command" compadd -a commands
+        ;;
+    *)
+        local cmd subcmds
+        local -a commands
+        cmd=${words[2]}
+        subcmds=$(sub completions ${words[2,$(($CURRENT - 1))]})
+        commands=(${(ps:\n:)subcmds})
+        _wanted subcommand expl "sub $cmd subcommand" compadd -a commands
+        ;;
+esac
