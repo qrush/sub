@@ -63,10 +63,14 @@ bash | zsh )
   ;;
 esac
 
+wrapper_function=
+# hack for bash where numbers are not valid function name
+[ "$shell" = "bash" ] && wrapper_function=_sub_wrapper
+
 commands=(`sub commands --sh`)
 IFS="|"
 cat <<EOS
-_sub_wrapper() {
+${wrapper_function:-sub}() {
   local command="\$1"
   if [ "\$#" -gt 0 ]; then
     shift
@@ -81,14 +85,5 @@ _sub_wrapper() {
 }
 EOS
 
-# zsh can't pass argument with aliases, but bash can.
-# zsh can have functions with the name being only numbers, but bash can't.
-# fix both cases here by letting zsh have a function, and bash have its alias.
-case "$shell" in
-bash )
-  echo "alias sub=_sub_wrapper"
-  ;;
-zsh )
-  echo "sub=_sub_wrapper"
-  ;;
-esac
+# related to the bash hack above
+[ -n "$wrapper_function" ] && echo "alias sub=${wrapper_function}"
