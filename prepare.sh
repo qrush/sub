@@ -5,6 +5,9 @@ NAME="$1"
 if [ -z "$NAME" ]; then
   echo "usage: prepare.sh NAME_OF_YOUR_SUB" >&2
   exit 1
+elif [ "${NAME/-}" != "$NAME" ]; then
+  echo "The name of a sub cannot contain dashes." >&2
+  exit 1
 fi
 
 SUBNAME=$(echo $NAME | tr '[A-Z]' '[a-z]')
