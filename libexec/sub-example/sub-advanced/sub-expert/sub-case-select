@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# Usage: sub example advanced expert case-select
+# Summary: BASH Case Select Example
+# Help: This is an example of a BASH Case Select
+
+set -e
+
+# Provide sub completions
+if [ "$1" = "--complete" ]; then
+  echo --what
+  echo --break
+  exit
+fi
+
+what="counter"
+break_on=6
+while [ ! "$1" == "" ]; do
+	case "$1" in
+		--what)
+			if [[ ! "$2" == -* ]]; then
+				what=$2
+				shift
+			else
+				what="default"
+			fi
+		;;
+		--break) 
+			if [[ ! "$2" == -* ]]; then
+				break_on=$2
+				shift
+			else
+				break_on=3
+			fi
+		;;
+	esac
+
+	shift
+done
+
+echo "-=> Executing Case Select Example"
+echo "----> Breaking on $break_on"
+echo "----> Counter is called $what"
+
+COUNTER=0
+while [ $COUNTER -lt 5 ]; do
+	echo "------> The $what is $COUNTER"
+	COUNTER=`expr $COUNTER + 1`
+
+	if [ "$break_on" == "$COUNTER" ]; then
+		break
+	fi
+done
+
+echo "- Finished..."

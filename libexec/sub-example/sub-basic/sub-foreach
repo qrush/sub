@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Usage: sub example basic foreach [--break]
+# Summary: BASH For Each Example w/ break loop option
+# Help: This command is an example of a BASH For Each Loop with an example of how to break the loop based on an argument parameter
+
+set -e
+
+# Provide sub completions
+if [ "$1" = "--complete" ]; then
+  echo --break
+  exit
+fi
+
+if [ "$1" = "--break" ] && [ ! "$2" == "" ] && [[ ! "$2" == -* ]]; then
+	break_on=$2
+	shift
+	shift
+elif [ "$1" = "--break" ] && [ "$2" == "" ]; then
+	echo "Defaulting Break On Three"
+	break_on=3
+	shift
+else
+	break_on=6
+fi
+
+foreach_array=("one" "two" "three" "four" "five")
+count=0
+
+for array_value in ${foreach_array[@]}
+do
+	if [ "$break_on" == "$count" ]; then
+		break
+	else
+		echo $array_value
+	fi
+	count=`expr $count + 1`
+done
+
+echo "done"

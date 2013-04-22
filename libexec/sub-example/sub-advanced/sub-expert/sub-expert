@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Usage: sub example advanced expert
+# Summary: Collection of expert scripts
+# Help: Collection of advanced expert sub scripts
+
+sub help example advanced expert

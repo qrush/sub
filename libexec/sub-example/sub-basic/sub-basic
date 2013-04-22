@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Usage: sub example bash basic
+# Summary: List all basic sub Example Scripts
+# Help: This command lists all of the basic sub Example Scripts
+
+set -e
+
+sub help example bash basic
