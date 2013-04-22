@@ -23,7 +23,7 @@ fi
 
 shopt -s nullglob
 
-if [ "$_SUB_COMMAND_IS" == "true" ] && [[ ! "$_SUB_COMMAND_ROOT" == *sub-$_SUB_COMMAND_FILE ]] && [[ "$_SUB_COMMAND_FILE" == "commands" && ! "$1" == "" && "$3" == "" ]]; then
+if [[ "$_SUB_COMMAND_IS" == "true" && ! "$_SUB_COMMAND_ROOT" == *sub-$_SUB_COMMAND_FILE ]] && [[ "$2" != "" || "$1" != "" ]]; then
   if grep -i "^# provide sub completions" "$_SUB_COMMAND_ROOT/sub-$_SUB_COMMAND_FILE" >/dev/null; then
     exec "$_SUB_COMMAND_ROOT/sub-$_SUB_COMMAND_FILE" --complete "$@"
   fi
