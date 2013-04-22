@@ -96,7 +96,7 @@ truncate() {
 
 # Provide sub completions
 if [ "$1" = "--complete" ]; then
-  exec "sub-commands"
+  echo "$(sub commands)"
   exit
 fi
 
