@@ -2,21 +2,36 @@
 set -e
 
 print_summaries() {
+  local sub_commands="$(sub commands)"
   local commands=()
   local summaries=()
   local longest_command=0
   local command
 
-  for command in $(sub-commands); do
+  if [[ "$0" == *help ]]; then
+    sub_commands="$(sub commands $_SUB_COMMAND_VARS)"
+    if [ -f "$sub_commands" ]; then
+      print_help $sub_commands
+      exit
+    fi
+  fi
+
+  for command in ${sub_commands[@]}; do
     local file="$(command_path "$command")"
-    if [ ! -h "$file" ]; then
+    if [ ! -h "$file" ] && [ -f "$file" ]; then
       local summary="$(summary "$file")"
       if [ -n "$summary" ]; then
-        commands["${#commands[@]}"]="$command"
+
+        if [ -d "$_SUB_COMMAND_ROOT/sub-$command" ]; then
+          commands["${#commands[@]}"]="-> $command"
+        else
+          commands["${#commands[@]}"]="$command"
+        fi
+
         summaries["${#summaries[@]}"]="$summary"
 
         if [ "${#command}" -gt "$longest_command" ]; then
-          longest_command="${#command}"
+          longest_command=`expr ${#command} + 3`
         fi
       fi
     fi
@@ -47,7 +62,12 @@ print_help() {
 }
 
 command_path() {
-  command -v "sub-$command" || command -v "sub-sh-$command" || true
+  sub_path="$(command -v "sub-$command" || command -v "sub-sh-$command" || true)"
+  if [ "$sub_path" == "" ] && [ -f "$_SUB_COMMAND_ROOT/sub-$command/sub-$command" ]; then
+    echo "$_SUB_COMMAND_ROOT/sub-$command/sub-$command"
+  else
+    echo "$sub_path"
+  fi
 }
 
 summary() {
@@ -80,16 +100,15 @@ if [ "$1" = "--complete" ]; then
   exit
 fi
 
-command="$1"
-case "$command" in
-"") echo "Usage: sub <command> [<args>]
+command="$_SUB_COMMAND_FILE"
+if [ "$command" == "" ] || [ "$command" == "help" ] || [[ "$_SUB_COMMAND_ROOT" == *sub-$_SUB_COMMAND_FILE ]]; then
+echo "Usage: sub <command> [<args>]
 
 Some useful sub commands are:
 $(print_summaries)
 
 See 'sub help <command>' for information on a specific command."
-;;
-*)
+else
   file="$(command_path "$command")"
 
   if [ -n "$file" ]; then
@@ -98,4 +117,4 @@ See 'sub help <command>' for information on a specific command."
     echo "sub: no such command \`$command'" >&2
     exit 1
   fi
-esac
+fi
