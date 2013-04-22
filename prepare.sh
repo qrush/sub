@@ -1,6 +1,36 @@
 #!/usr/bin/env bash
 set -e
 
+create_sub() {
+  file="$1"
+  SUBNAME="$2"
+  ENVNAME="$3"
+  sed "s/sub/$SUBNAME/g;s/SUB_ROOT/$ENVNAME/g" "$file" > $(echo $file | sed "s/sub/$SUBNAME/g")
+  rm $file
+}
+
+chmod_files() {
+  for file in $1/*; do
+    chmod a+x $file
+  done
+}
+
+prepare_sub() {
+  SUBNAME="$2"
+  mkdir -p $(echo $1 | sed "s/sub/$SUBNAME/g")
+
+  for file in $1/sub*; do
+    if [ -d "$file" ]; then
+      prepare_sub $file $SUBNAME
+    elif [ -f "$file" ]; then
+      create_sub $file $SUBNAME $ENVNAME
+    fi
+  done
+
+  chmod_files $(echo $1 | sed "s/sub/$SUBNAME/g")
+  rm -rf $1
+}
+
 NAME="$1"
 if [ -z "$NAME" ]; then
   echo "usage: prepare.sh NAME_OF_YOUR_SUB" >&2
@@ -17,13 +47,14 @@ if [ "$NAME" != "sub" ]; then
   mv share/sub share/$SUBNAME
 
   for file in **/sub*; do
-    sed "s/sub/$SUBNAME/g;s/SUB_ROOT/$ENVNAME/g" "$file" > $(echo $file | sed "s/sub/$SUBNAME/")
-    rm $file
+    if [ -d "$file" ]; then
+      prepare_sub $file $SUBNAME
+    elif [ -f "$file" ]; then
+      create_sub $file $SUBNAME $ENVNAME
+    fi
   done
 
-  for file in libexec/*; do
-    chmod a+x $file
-  done
+  chmod_files "libexec"
 
   ln -s ../libexec/$SUBNAME bin/$SUBNAME
 fi
@@ -45,3 +76,4 @@ echo "    git add ."
 echo "    git checkout -f"
 echo
 echo "Thanks for making a sub!"
+
