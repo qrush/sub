@@ -7,12 +7,11 @@ compctl -K _sub sub
 _sub() {
   local word words completions
   read -cA words
-  word="${words[2]}"
 
   if [ "${#words}" -eq 2 ]; then
     completions="$(sub commands)"
-  else
-    completions="$(sub completions "${word}")"
+  elif [ "${#words}" -gt 2 ]; then
+    completions="$(sub commands "$words")"
   fi
 
   reply=("${(ps:\n:)completions}")
