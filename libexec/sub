@@ -19,7 +19,6 @@ abs_dirname() {
   cd "$cwd"
 }
 
-
 libexec_path="$(abs_dirname "$0")"
 export _SUB_ROOT="$(abs_dirname "$libexec_path")"
 
@@ -89,8 +88,6 @@ fi
 shift
 if [ "$flags" == "" ]; then
   exec "$command_path" "$@"
-elif [[ "$flags" == *- ]]; then
-  exec "$command_path" "--complete" $@
 else
   exec "$command_path" $flags
 fi
