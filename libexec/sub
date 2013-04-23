@@ -30,7 +30,7 @@ command_builder=""
 _SUB_COMMAND_IS="false"
 prev_command=""
 
-for i in $(seq 0 ${#commands[@]})
+for (( i=0; i<=${#commands[@]}; i++ ))
 do
   if [ "${commands[$i]}" != "" ] && [[ "${commands[$i]}" != -* ]]; then
     if [ -d "$path_builder/sub-${commands[$i]}" ]; then
@@ -52,7 +52,7 @@ done
 
 flags=""
 flags_on="false"
-for i in $(seq 0 ${#commands[@]})
+for (( i=0; i<=${#commands[@]}; i++ ))
 do
   if [[ "${commands[$i]}" == -* ]] || [ "$flags_on" == "true" ]; then
     flags="$flags${commands[$i]} "
