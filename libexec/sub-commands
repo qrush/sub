@@ -23,10 +23,14 @@ fi
 
 shopt -s nullglob
 
-if [[ "$_SUB_COMMAND_IS" == "true" && ! "$_SUB_COMMAND_ROOT" == *sub-$_SUB_COMMAND_FILE ]] && [[ "$2" != "" || "$1" != "" ]]; then
+if [[ ! "$_SUB_COMMAND_ROOT" == *sub-$_SUB_COMMAND_FILE ]] && [[ "$2" != "" || "$1" != "" ]]; then
   if grep -i "^# provide sub completions" "$_SUB_COMMAND_ROOT/sub-$_SUB_COMMAND_FILE" >/dev/null; then
-    exec "$_SUB_COMMAND_ROOT/sub-$_SUB_COMMAND_FILE" --complete "$@"
+    completions=`exec "$_SUB_COMMAND_ROOT/sub-$_SUB_COMMAND_FILE" --complete "$@"`
+    if [ "$completions" ]; then
+      echo $completions
+    fi
   fi
+  exit
 else
   { for path in ${PATH//:/$'\n'}; do
       for command in "${path}/sub-"*; do
