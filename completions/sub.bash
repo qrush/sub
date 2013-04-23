@@ -5,8 +5,13 @@ _sub() {
   if [ "$COMP_CWORD" -eq 1 ]; then
     COMPREPLY=( $(compgen -W "$(sub commands)" -- "$word") )
   elif [ "$COMP_CWORD" -gt 1 ]; then
-    COMPREPLY=( $(compgen -W "$(sub commands ${COMP_WORDS[@]})" -- "$word") )
+  	$commands="$(sub commands ${COMP_WORDS[@]})"
+  	if [ "$commands" ]; then
+    	COMPREPLY=( $(compgen -W "$commands" -- "$word") )
+    else
+    	return 1
+    fi
   fi
 }
 
-complete -F _sub sub
+complete -o default -F _sub sub
