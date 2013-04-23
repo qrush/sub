@@ -7,7 +7,7 @@ set -e
 
 # Provide sub completions
 if [ "$1" = "--complete" ]; then
-  echo --what
+  echo --name
   echo --break
   exit
 fi
@@ -16,12 +16,12 @@ what="counter"
 break_on=6
 while [ ! "$1" == "" ]; do
 	case "$1" in
-		--what)
+		--name)
 			if [[ ! "$2" == -* ]]; then
-				what=$2
+				name=$2
 				shift
 			else
-				what="default"
+				name="default"
 			fi
 		;;
 		--break) 
@@ -39,11 +39,11 @@ done
 
 echo "-=> Executing Case Select Example"
 echo "----> Breaking on $break_on"
-echo "----> Counter is called $what"
+echo "----> Counter is called $name"
 
 COUNTER=0
 while [ $COUNTER -lt 5 ]; do
-	echo "------> The $what is $COUNTER"
+	echo "------> The $name is $COUNTER"
 	COUNTER=`expr $COUNTER + 1`
 
 	if [ "$break_on" == "$COUNTER" ]; then
