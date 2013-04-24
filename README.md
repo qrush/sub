@@ -5,6 +5,7 @@ Sub is a model for setting up shell programs that use subcommands, like `git` or
 A sub program is run at the command line using this style:
 
     $ [name of program] [subcommand] [(args)]
+    $ [name of program] [subcommand] [subcommand] [(args)]
 
 Here's some quick examples:
 
@@ -15,10 +16,13 @@ Here's some quick examples:
 Each subcommand maps to a separate, standalone executable program. Sub programs are laid out like so:
 
     .
-    ├── bin               # contains the main executable for your program
-    ├── completions       # (optional) bash/zsh completions
-    ├── libexec           # where the subcommand executables are
-    └── share             # static data storage
+    ├── bin                               # contains the main executable for your program
+    ├── completions                       # (optional) bash/zsh completions
+    ├── libexec                           # where the subcommand executables are
+    ├───> sub-command                     # sub command (Displays summary for b & c)
+    |  ├────∎ sub-command-b               # sub command command-b <args>
+    |  └────∎ sub-command-c               # sub command command-c <args>
+    └── share                             # static data storage
 
 ## Subcommands
 
@@ -49,8 +53,7 @@ You can run *any* executable in the `libexec` directly, as long as it follows th
 
 You get a few commands that come with your sub:
 
-* `commands`: Prints out every subcommand available
-* `completions`: Helps kick off subcommand autocompletion.
+* `commands`: Prints out every subcommand available and kicks off autocompletion
 * `help`: Document how to use each subcommand
 * `init`: Shows how to load your sub with autocompletions, based on your shell.
 * `shell`: Helps with calling subcommands that might be named the same as builtin/executables.
