@@ -2,6 +2,7 @@
 set -e
 
 print_summaries() {
+
   local sub_commands="$(sub commands)"
   local commands=()
   local summaries=()
@@ -112,7 +113,7 @@ Some useful sub $command commands are:
 
 $(print_summaries)
 
-See 'sub help $command' for information on a specific command."
+See 'sub $_SUB_COMMAND_VARS [command]' for information on a specific command."
     fi
   else
     echo "Sorry, this command isn't documented yet."
@@ -132,7 +133,7 @@ echo "Usage: sub $command [<args>]
 Some useful sub $command commands are:
 $(print_summaries)
 
-See 'sub help $command' for information on a specific command."
+See 'sub $_SUB_COMMAND_VARS' for information on a specific command."
 
 else
   file="$(command_path "$command")"
