@@ -4,11 +4,14 @@ _sub() {
 
   if [ "$COMP_CWORD" -eq 1 ]; then
     COMPREPLY=( $(compgen -W "$(sub commands)" -- "$word") )
-  else
-    local command="${COMP_WORDS[1]}"
-    local completions="$(sub completions "$command")"
-    COMPREPLY=( $(compgen -W "$completions" -- "$word") )
+  elif [ "$COMP_CWORD" -gt 1 ]; then
+  	commands="$(sub commands ${COMP_WORDS[@]})"
+  	if [ "$commands" ]; then
+    	COMPREPLY=( $(compgen -W "$commands" -- "$word") )
+    else
+    	return 1
+    fi
   fi
 }
 
-complete -F _sub sub
+complete -o default -F _sub sub

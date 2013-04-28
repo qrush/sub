@@ -6,13 +6,6 @@
 
 set -e
 
-# Provide sub completions
-if [ "$1" = "--complete" ]; then
-  echo --sh
-  echo --no-sh
-  exit
-fi
-
 if [ "$1" = "--sh" ]; then
   sh=1
   shift
@@ -23,19 +16,42 @@ fi
 
 shopt -s nullglob
 
+if grep -i "^# provide sub completions" "$_SUB_COMMAND_ROOT/sub-$_SUB_COMMAND_FILE" >/dev/null; then
+  completions=`exec "$_SUB_COMMAND_ROOT/sub-$_SUB_COMMAND_FILE" --complete "$@"`
+  if [ "$completions" ]; then
+    echo $completions
+  fi
+  exit
+fi
+
 { for path in ${PATH//:/$'\n'}; do
     for command in "${path}/sub-"*; do
-      command="${command##*sub-}"
-      if [ -n "$sh" ]; then
-        if [ ${command:0:3} = "sh-" ]; then
-          echo ${command##sh-}
+      if [ ! "$command" == "$_SUB_COMMAND_ROOT/sub-$_SUB_COMMAND_FILE" ] || [ "$_SUB_COMMAND_FILE" == "commands" ]; then
+        if [ -d "$_SUB_COMMAND_ROOT" ] && [ "$_SUB_COMMAND_ROOT" == "$path" ]; then
+          do_commands="true"
+        elif [ ! -d "$_SUB_COMMAND_ROOT" ] || [ "$_SUB_COMMAND_ROOT" == "$_SUB_ROOT/libexec" ]; then
+          do_commands="true"
+        else
+          do_commands="false"
         fi
-      elif [ -n "$nosh" ]; then
-        if [ ${command:0:3} != "sh-" ]; then
-          echo ${command##sh-}
-        fi
+      elif [ "$command" == "commands" ] && [ "$command" == "$_SUB_COMMAND_FILE" ]; then
+        do_commands="true"
       else
-        echo ${command##sh-}
+        do_commands="false"
+      fi
+       if [ "$do_commands" == "true" ]; then
+        command="${command##*sub-}"
+        if [ -n "$sh" ]; then
+          if [ ${command:0:3} = "sh-" ]; then
+            echo ${command##sh-}
+          fi
+        elif [ -n "$nosh" ]; then
+          if [ ${command:0:3} != "sh-" ]; then
+            echo ${command##sh-}
+          fi
+        else
+          echo ${command##sh-}
+        fi
       fi
     done
   done

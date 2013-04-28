@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Usage: sub example advanced
+# Summary: List all Advanced sub Example Scripts
+# Help: This command lists all of the Advanced sub Example Scripts
+
+set -e
+
+sub help example bash advanced

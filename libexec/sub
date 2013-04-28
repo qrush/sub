@@ -21,21 +21,73 @@ abs_dirname() {
 
 libexec_path="$(abs_dirname "$0")"
 export _SUB_ROOT="$(abs_dirname "$libexec_path")"
-export PATH="${libexec_path}:$PATH"
 
-command="$1"
-case "$command" in
-"" | "-h" | "--help" )
-  exec sub-help
-  ;;
-* )
-  command_path="$(command -v "sub-$command" || true)"
-  if [ ! -x "$command_path" ]; then
-    echo "sub: no such command \`$command'" >&2
-    exit 1
+commands=($@)
+
+path_builder="$_SUB_ROOT/libexec"
+command_builder=""
+_SUB_COMMAND_IS="false"
+prev_command=""
+
+for (( i=0; i<=${#commands[@]}; i++ ))
+do
+  if [ "${commands[$i]}" != "" ] && [[ "${commands[$i]}" != -* ]]; then
+    if [ -d "$path_builder/sub-${commands[$i]}" ]; then
+      path_builder="$path_builder/sub-${commands[$i]}"
+    fi
+    if [ -f "$path_builder/sub-${commands[$i]}" ]; then
+      prev_command=$command_builder
+      command_builder="${commands[$i]}"
+      _SUB_COMMAND_IS="true"
+    else
+      _SUB_COMMAND_IS="false"
+    fi
   fi
 
-  shift
+  if [[ "${commands[$i]}" == -* ]]; then
+    break
+  fi
+done
+
+flags=""
+flags_on="false"
+for (( i=0; i<=${#commands[@]}; i++ ))
+do
+  if [[ "${commands[$i]}" == -* ]] || [ "$flags_on" == "true" ]; then
+    flags="$flags${commands[$i]} "
+    flags_on="true"
+  fi
+done
+
+export _SUB_COMMAND_ROOT="$path_builder"
+export _SUB_COMMAND_FILE="$command_builder"
+export _SUB_COMMAND_VARS="$@"
+export _SUB_COMMAND_IS="$_SUB_COMMAND_IS"
+
+if [ -d "$_SUB_COMMAND_ROOT" ]; then
+  export PATH="${libexec_path}:$_SUB_COMMAND_ROOT:$PATH"
+else
+  export PATH="${libexec_path}:$PATH"
+fi
+
+command="$1"
+if [ "$command" == "" ] || [ "$command" == "-h" ] || [ "$command" == "-help" ]; then
+  exec sub-help
+  exit
+elif [ "$command" == "help" ] || [ "$command" == "commands" ]; then
+  command_path="$(command -v "sub-$command" || true)"
+else
+  command_path="$(command -v "sub-$command_builder" || true)"
+fi
+
+if [ ! -x "$command_path" ]; then
+  echo "sub: no such command \`$command'" >&2
+  exit 1
+fi
+
+shift
+if [ "$flags" == "" ]; then
   exec "$command_path" "$@"
-  ;;
-esac
+else
+  exec "$command_path" $flags
+fi
