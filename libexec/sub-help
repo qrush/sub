@@ -94,6 +94,31 @@ truncate() {
   fi
 }
 
+print_command_help() {
+  local file="$1"
+  local usage="$(usage "$file")"
+
+  if [ -n "$usage" ]; then
+    echo "$usage"
+
+    local help="$(help "$file")"
+    [ -n "$help" ] && echo && echo "$help"
+
+    local _SUB_SUMMARY="$(print_summaries)"
+
+    if [ ! "$_SUB_SUMMARY" == "" ]; then
+      echo "
+Some useful sub $command commands are:
+
+$(print_summaries)
+
+See 'sub help $command' for information on a specific command."
+    fi
+  else
+    echo "Sorry, this command isn't documented yet."
+  fi
+}
+
 # Provide sub completions
 if [ "$1" = "--complete" ]; then
   echo "$(sub commands)"
@@ -101,18 +126,23 @@ if [ "$1" = "--complete" ]; then
 fi
 
 command="$_SUB_COMMAND_FILE"
-if [ "$command" == "" ] || [ "$command" == "help" ] || [[ "$_SUB_COMMAND_ROOT" == *sub-$_SUB_COMMAND_FILE ]]; then
-echo "Usage: sub <command> [<args>]
+if [[ "$command" == "" || "$command" == "help" ]] && [[ ! "$_SUB_COMMAND_ROOT" == *sub-$_SUB_COMMAND_FILE ]]; then
+echo "Usage: sub $command [<args>]
 
-Some useful sub commands are:
+Some useful sub $command commands are:
 $(print_summaries)
 
-See 'sub help <command>' for information on a specific command."
+See 'sub help $command' for information on a specific command."
+
 else
   file="$(command_path "$command")"
 
   if [ -n "$file" ]; then
-    print_help "$file"
+    if [[ "$_SUB_COMMAND_ROOT" == *sub-$_SUB_COMMAND_FILE ]]; then
+      print_command_help "$file"
+    else
+      print_help "$file"
+    fi
   else
     echo "sub: no such command \`$command'" >&2
     exit 1
