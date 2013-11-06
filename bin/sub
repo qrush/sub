@@ -1,1 +1,2 @@
-../libexec/sub
+#!/usr/bin/env ruby
+exec("/bin/sh", "#{File.dirname(__FILE__)}/../libexec/sub", *ARGV)
