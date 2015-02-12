@@ -33,10 +33,16 @@ print_summaries() {
 }
 
 print_help() {
-  local file="$1"
+  local command="$1"
+  local file="$2"
   local usage="$(usage "$file")"
 
   if [ -n "$usage" ]; then
+    if [ -L "$file" ]; then
+      local target_command="$(readlink $file | sed -r 's/^sub-(sh-)?//')"
+      echo "$command is an alias for the command $target_command". && echo
+    fi
+    
     echo "$usage"
 
     local help="$(help "$file")"
@@ -93,7 +99,7 @@ See 'sub help <command>' for information on a specific command."
   file="$(command_path "$command")"
 
   if [ -n "$file" ]; then
-    print_help "$file"
+    print_help "$command" "$file"
   else
     echo "sub: no such command \`$command'" >&2
     exit 1
