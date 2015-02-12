@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+#
+# Usage: sub init [-]
+# Summary: Install sub
+# Help: When called without any option, this will print instructions on how to install sub.
+# If invoked with the - option, you get a few lines of shell script that will, when eval'd, set up sub for your current session.
 set -e
 
 print=""
