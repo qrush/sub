@@ -169,16 +169,9 @@ So you've prepared your own sub, now how do you use it? Here's one way you could
 
     cd
     git clone [YOUR GIT HOST URL]/sub.git .sub
+    .sub/bin/sub init
 
-For bash users:
-
-    echo 'eval "$($HOME/.sub/bin/sub init -)"' >> ~/.bash_profile
-    exec bash
-
-For zsh users:
-
-    echo 'eval "$($HOME/.sub/bin/sub init -)"' >> ~/.zshenv
-    source ~/.zshenv
+Then follow the instructions given by `sub init` to add `sub` to your path and set up autocompletions.
 
 You could also install your sub in a different directory, say `/usr/local`. This is just one way you could provide a way to install your sub.
 
