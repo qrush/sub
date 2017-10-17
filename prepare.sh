@@ -25,11 +25,42 @@ if [ "$NAME" != "sub" ]; then
     chmod a+x $file
   done
 
-  ln -s ../libexec/$SUBNAME bin/$SUBNAME
+  ln -s ../libexec/$SUBNAME bin/$SUBNAME".in"
 fi
+
+cat << __EOF__ > configure.ac
+AC_INIT([$SUBNAME], [0.1], [paolo@lulli.net], [$SUBNAME])
+AC_CONFIG_FILES([Makefile bin/Makefile libexec/Makefile bin/$SUBNAME])
+AM_INIT_AUTOMAKE(foreign)
+#AC_PROG_CC
+AC_PROG_INSTALL
+AC_OUTPUT
+__EOF__
+
+cat << __EOF__ > Makefile.am
+SUBDIRS = bin libexec
+__EOF__
+
+cat << __EOF__ > libexec/Makefile.am
+dist_libexec_SCRIPTS = $SUBNAME\
+	$SUBNAME-commands\
+	$SUBNAME-completions\
+	$SUBNAME-help\
+	$SUBNAME-init\
+	$SUBNAME-sh-shell
+__EOF__
+
+cat << __EOF__ > bin/Makefile.am
+dist_bin_SCRIPTS = $SUBNAME
+__EOF__
 
 rm README.md
 rm prepare.sh
+
+echo "#! /bin/sh" > automake.sh 
+echo "aclocal && automake -a -c && autoconf" >> automake.sh 
+chmod 755 automake.sh
+./automake.sh
 
 echo "Done! Enjoy your new sub! If you're happy with your sub, run:"
 echo

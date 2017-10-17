@@ -19,7 +19,8 @@ abs_dirname() {
   cd "$cwd"
 }
 
-libexec_path="$(abs_dirname "$0")"
+libexec_path=@prefix@/libexec
+#libexec_path="$(abs_dirname "$0")"
 export _SUB_ROOT="$(abs_dirname "$libexec_path")"
 export PATH="${libexec_path}:$PATH"
 
