@@ -1,0 +1,10 @@
+Package: helloworld
+Version: 1.0-1
+Section: base
+Priority: optional
+Architecture: i386
+Depends: libsomethingorrather (>= 1.2.13), anotherDependency (>= 1.2.6)
+Maintainer: Your Name <you@email.com>
+Description: Hello World
+ When you need some sunshine, just run this
+ small program!
