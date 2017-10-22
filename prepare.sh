@@ -66,6 +66,7 @@ cat << EOF > makedeb.sh
 #!/usr/bin/env bash
 
 VERS=1.0.0
+TARGET_DIR=../target
 cd \$(dirname \$0);
 CURRDIR=\$(pwd)
 
@@ -74,7 +75,7 @@ mkdir -p \${workdir}/DEBIAN
 cp -r ./debian/* \${workdir}/DEBIAN
 ./configure "\$@"
 make install DESTDIR=\${workdir}
-dpkg-deb --build \${workdir} ../$SUBNAME-\$VERS.deb
+dpkg-deb --build \${workdir} \$TARGET_DIR/$SUBNAME-\$VERS.deb
 
 EOF
 chmod 755 makedeb.sh
