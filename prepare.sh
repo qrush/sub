@@ -30,7 +30,7 @@ fi
 
 cat << __EOF__ > configure.ac
 AC_INIT([$SUBNAME], [0.1], [paolo@lulli.net], [$SUBNAME])
-AC_CONFIG_FILES([Makefile bin/Makefile libexec/Makefile bin/$SUBNAME])
+AC_CONFIG_FILES([Makefile bin/Makefile etc/Makefile libexec/Makefile bin/$SUBNAME ])
 AM_INIT_AUTOMAKE(foreign)
 #AC_PROG_CC
 AC_PROG_INSTALL
@@ -38,20 +38,30 @@ AC_OUTPUT
 __EOF__
 
 cat << __EOF__ > Makefile.am
-SUBDIRS = bin libexec
+SUBDIRS = bin libexec etc
 __EOF__
 
 cat << __EOF__ > libexec/Makefile.am
-dist_libexec_SCRIPTS = $SUBNAME\
-	$SUBNAME-commands\
-	$SUBNAME-completions\
-	$SUBNAME-help\
-	$SUBNAME-init\
+dist_libexec_SCRIPTS = $SUBNAME\\
+	$SUBNAME-commands\\
+	$SUBNAME-completions\\
+	$SUBNAME-help\\
+	$SUBNAME-init\\
 	$SUBNAME-sh-shell
 __EOF__
 
 cat << __EOF__ > bin/Makefile.am
 dist_bin_SCRIPTS = $SUBNAME
+__EOF__
+
+test -d ./etc || mkdir ./etc
+
+cat << __EOF__ > etc/Makefile.am
+dist_sysconf_DATA = $SUBNAME.conf
+__EOF__
+
+test -f  etc/$SUBNAME.conf || cat << __EOF__ > etc/$SUBNAME.conf
+#Here your configuration
 __EOF__
 
 rm README.md
@@ -75,6 +85,7 @@ mkdir -p \${workdir}/DEBIAN
 cp -r ./debian/* \${workdir}/DEBIAN
 ./configure "\$@"
 make install DESTDIR=\${workdir}
+test -d \$TARGET_DIR || mkdir -p \$TARGET_DIR
 dpkg-deb --build \${workdir} \$TARGET_DIR/$SUBNAME-\$VERS.deb
 
 EOF
