@@ -62,6 +62,23 @@ echo "aclocal && automake -a -c && autoconf" >> automake.sh
 chmod 755 automake.sh
 ./automake.sh
 
+cat << EOF > makedeb.sh
+#!/usr/bin/env bash
+
+VERS=1.0.0
+cd \$(dirname \$0);
+CURRDIR=\$(pwd)
+
+workdir=\$(mktemp -d /tmp/mkdebian_XXXXXXXX)
+mkdir -p \${workdir}/DEBIAN
+cp -r ./debian/* \${workdir}/DEBIAN
+./configure "\$@"
+make install DESTDIR=\${workdir}
+dpkg-deb --build \${workdir} ../\$SUBNAME-\$VERS.deb
+
+EOF
+chmod 755 makedeb.sh
+
 echo "Done! Enjoy your new sub! If you're happy with your sub, run:"
 echo
 echo "    rm -rf .git"
