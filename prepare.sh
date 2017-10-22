@@ -74,7 +74,7 @@ mkdir -p \${workdir}/DEBIAN
 cp -r ./debian/* \${workdir}/DEBIAN
 ./configure "\$@"
 make install DESTDIR=\${workdir}
-dpkg-deb --build \${workdir} ../$SUBNAME-$VERS.deb
+dpkg-deb --build \${workdir} ../$SUBNAME-\$VERS.deb
 
 EOF
 chmod 755 makedeb.sh
