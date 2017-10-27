@@ -43,12 +43,12 @@ __EOF__
 
 cat << __EOF__ > libexec/Makefile.am
 #dist_libexec_SCRIPTS =  # to omit subdir
-nobase_dist_libexec_SCRIPTS = $SUBNAME\\
-	$SUBNAME-commands\\
-	$SUBNAME-completions\\
-	$SUBNAME-help\\
-	$SUBNAME-init\\
-	$SUBNAME-sh-shell
+nobase_dist_libexec_SCRIPTS = $SUBNAME/$SUBNAME\\
+	$SUBNAME/$SUBNAME-commands\\
+	$SUBNAME/$SUBNAME-completions\\
+	$SUBNAME/$SUBNAME-help\\
+	$SUBNAME/$SUBNAME-init\\
+	$SUBNAME/$SUBNAME-sh-shell
 __EOF__
 
 cat << __EOF__ > bin/Makefile.am
@@ -59,8 +59,8 @@ test -d ./etc || mkdir ./etc
 test -d ./etc/$SUBNAME || mkdir ./etc/$SUBNAME
 
 cat << __EOF__ > etc/Makefile.am
-#dist_sysconf_DATA = $SUBNAME.conf # to omit subdir
-nobase_dist_sysconf_DATA = $SUBNAME.conf
+#dist_sysconf_DATA = $SUBNAME/$SUBNAME.conf # to omit subdir
+nobase_dist_sysconf_DATA = $SUBNAME/$SUBNAME.conf
 __EOF__
 
 test -f  etc/$SUBNAME/$SUBNAME.conf || cat << __EOF__ > etc/$SUBNAME/$SUBNAME.conf
