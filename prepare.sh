@@ -13,6 +13,7 @@ ENVNAME="$(echo $NAME | tr '[a-z-]' '[A-Z_]')_ROOT"
 echo "Preparing your '$SUBNAME' sub!"
 
 if [ "$NAME" != "sub" ]; then
+  test -d bin && mkdir bin
   test -d share/sub && mv share/sub share/$SUBNAME
 
   for file in libexec/sub*; do
