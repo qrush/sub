@@ -13,10 +13,9 @@ ENVNAME="$(echo $NAME | tr '[a-z-]' '[A-Z_]')_ROOT"
 echo "Preparing your '$SUBNAME' sub!"
 
 if [ "$NAME" != "sub" ]; then
-  rm bin/sub
-  mv share/sub share/$SUBNAME
+  test -d share/sub && mv share/sub share/$SUBNAME
 
-  for file in **/sub*; do
+  for file in libexec/sub*; do
     sed "s/sub/$SUBNAME/g;s/SUB_ROOT/$ENVNAME/g" "$file" > $(echo $file | sed "s/sub/$SUBNAME/")
     rm $file
   done
@@ -25,7 +24,19 @@ if [ "$NAME" != "sub" ]; then
     chmod a+x $file
   done
 
-  ln -s ../libexec/$SUBNAME bin/$SUBNAME".in"
+  mkdir libexec/tmp
+  mv libexec/$SUBNAME*  libexec/tmp && mv libexec/tmp libexec/$SUBNAME
+  #ln -s $(pwd)/libexec/$SUBNAME/main bin/$SUBNAME".in"
+  
+#  sed "s/sub/$SUBNAME/g;s/SUB_ROOT/$ENVNAME/g" "libexec/main" > /tmp/libexecmain \
+#	&& cp /tmp/libexecmain libexec/$SUBNAME/main \
+#	&&  chmod a+x libexec/$SUBNAME/main\
+#	&& rm libexec/main
+  sed "s/sub/$SUBNAME/g;s/SUB_ROOT/$ENVNAME/g" "libexec/main" > /tmp/libexecmain \
+	&& cp /tmp/libexecmain bin/$SUBNAME".in" \
+	&& cp /tmp/libexecmain libexec/$SUBNAME/main 
+#	&& rm libexec/main
+  #ln -s bin/$SUBNAME".in" $(pwd)/libexec/$SUBNAME/main 
 fi
 
 cat << __EOF__ > configure.ac
@@ -43,7 +54,8 @@ __EOF__
 
 cat << __EOF__ > libexec/Makefile.am
 #dist_libexec_SCRIPTS =  # to omit subdir
-nobase_dist_libexec_SCRIPTS = $SUBNAME/$SUBNAME\\
+nobase_dist_libexec_SCRIPTS = $SUBNAME\\
+	$SUBNAME/main\\
 	$SUBNAME/$SUBNAME-commands\\
 	$SUBNAME/$SUBNAME-completions\\
 	$SUBNAME/$SUBNAME-help\\

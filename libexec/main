@@ -19,8 +19,14 @@ abs_dirname() {
   cd "$cwd"
 }
 
-libexec_path=@prefix@/libexec
 #libexec_path="$(abs_dirname "$0")"
+sjalv=$(basename $0)
+libexec_path=@prefix@/libexec/$sjalv
+
+if [[ "${libexec_path}" = *"@"* ]]; then
+        libexec_path="$(abs_dirname "$0")" #Substitution has not happened -> dev version
+fi
+
 export _SUB_ROOT="$(abs_dirname "$libexec_path")"
 export PATH="${libexec_path}:$PATH"
 
