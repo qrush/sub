@@ -38,6 +38,9 @@ print_help() {
 
   if [ -n "$usage" ]; then
     echo "$usage"
+    
+    local summary="$(summary "$file")"
+    [ -n "$summary" ] && echo "Summary: $summary"
 
     local help="$(help "$file")"
     [ -n "$help" ] && echo && echo "$help"
