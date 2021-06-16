@@ -25,7 +25,7 @@ shopt -s nullglob
 
 { for path in ${PATH//:/$'\n'}; do
     for command in "${path}/sub-"*; do
-      command="${command##*sub-}"
+      command="${command##${path}/sub-}"
       if [ -n "$sh" ]; then
         if [ ${command:0:3} = "sh-" ]; then
           echo ${command##sh-}
