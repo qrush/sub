@@ -38,7 +38,7 @@ set -e
 who
 ```
 
-Of course, this is a simple example...but now `rush who` should work!
+Of course, this is a simple example... but now `rush who` should work!
 
     $ rush who
     qrush     console  Sep 14 17:15 
@@ -49,9 +49,9 @@ You can run *any* executable in the `libexec` directly, as long as it follows th
 
 You get a few commands that come with your sub:
 
-* `commands`: Prints out every subcommand available
+* `commands`: Prints out every subcommand available.
 * `completions`: Helps kick off subcommand autocompletion.
-* `help`: Document how to use each subcommand
+* `help`: Document how to use each subcommand.
 * `init`: Shows how to load your sub with autocompletions, based on your shell.
 * `shell`: Helps with calling subcommands that might be named the same as builtin/executables.
 
