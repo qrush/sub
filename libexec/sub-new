@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Usage: sub new [command name]
+# Summary: Create a new sub command
+# Help: This command is used to create a new sub command 
+
+set -e
+
+if [ ! "$VISUAL" == "" ] || [ ! "$EDITOR" == "" ]; then
+	if [ ! "$VISUAL" == "" ]; then
+		EDITOR="$VISUAL"
+	elif [ ! "$EDITOR" == "" ]; then
+		EDITOR="$EDITOR"
+	fi
+else
+	EDITOR='vi'
+fi
+
+if [ $(echo $1 | wc -m) -gt 0 ]
+then
+	NEW_PATH=$_SUB_ROOT/libexec/sub-$1
+	$EDITOR $NEW_PATH
+	chmod a+x $NEW_PATH
+fi
